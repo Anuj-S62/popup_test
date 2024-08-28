@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
+import 'package:overlay_support/overlay_support.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(OverlaySupport.global(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Popup Example',
+      title: 'Flutter Global Popup Example',
       home: HomeScreen(),
     );
   }
@@ -20,14 +20,14 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter Popup Example'),
+        title: Text('Flutter Global Popup Example'),
       ),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
             // Delay the popup by 5 seconds
             Future.delayed(Duration(seconds: 5), () {
-              showPopup(context);
+              showOverlayPopup(context);
             });
           },
           child: Text('Show Popup After 5 Seconds'),
@@ -36,23 +36,29 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  void showPopup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Spoken Command'),
-          content: Text('This is the transcription of the spoken command.'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Close'),
+  void showOverlayPopup(BuildContext context) {
+    showOverlay((context, t) {
+      return Opacity(
+        opacity: t,
+        child: Material(
+          color: Colors.black54,
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.all(20),
+              margin: EdgeInsets.symmetric(horizontal: 40),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                'This is the transcription of the spoken command.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
-          ],
-        );
-      },
-    );
+          ),
+        ),
+      );
+    }, duration: Duration(seconds: 5));
   }
 }
