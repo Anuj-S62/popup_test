@@ -36,8 +36,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
   overlay_support: ^2.1.0
-  grpc: ^4.0.1
-
+#  grpc: ^4.0.1
+  build_grpc_channel: ^0.5.0
 
 
 dev_dependencies:
